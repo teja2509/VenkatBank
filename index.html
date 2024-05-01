@@ -91,22 +91,26 @@
     </style>
 </head>
 <body>
-    <form method="post" action="" name="product" id="product">
-        <h1>Enter Transactions</h1>
-        
+    <div>
+        <h1>Select Transaction Type</h1>
+        <button onclick="showCreditForm()">Credited </button>
+        <button onclick="showDebitForm()">Debited </button>
+    
+        <br>    
+        <br>    
+        <br>    
+        <br>    
 
+    <!-- Credit Transaction Form -->
+    <form method="post" action="" name="Credit" id="Credit" style="display: none;">
+        <h1>Enter Credit Transactions</h1>
+        
         <label for="date">Date*</label>
         <input class="fil" type="date" name="Date" required>
 
         <label for="money">Money*</label>
         <input class="fil" type="number" name="Money" placeholder="Enter Money" required>
-
-        <label for="type">Type*</label>
-        <select name="Type" required>
-            <option value="">Select Type</option>
-            <option value="Credited">Credited</option>
-            <option value="Debited">Debited</option>
-        </select>
+        
 
         <label for="reason">Reason*</label>
         <input class="fil" type="text" name="Reason" placeholder="Enter Reason" required>
@@ -119,29 +123,106 @@
         </div>
 
         <!-- Display Transactions (Initially Hidden) -->
-        <div id="transactions" style="display:none;">
+        <div id="Credit-transactions" style="display:none;">
             <div class="iframe-container">
                 <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vROM-K3RkGgRQycQRUNk53NkulCQd_qU2ydEwT4uVpErz_1efDpNny4Zi5SiX3kHFo4n5zXo7DEAGXw/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" height="700px" width="100%"></iframe>
             </div>
         </div>
     </form>
 
+
+    <!-- Debit Transaction Form -->
+    <form method="post" action="" name="Debit" id="Debit" style="display: none;">
+        <h1>Enter Debit Transactions</h1>
+        
+        <label for="date">Date*</label>
+        <input class="fil" type="date" name="Date" required>
+
+        <label for="money">Money*</label>
+        <input class="fil" type="number" name="Money" placeholder="Enter Money" required>
+
+        <label for="reason">Reason*</label>
+        <input class="fil" type="text" name="Reason" placeholder="Enter Reason" required>
+
+        <!-- Button Container to hold both buttons -->
+        <div class="button-container">
+            <button type="submit">Submit &#10132;</button>
+            <!-- Add Transactions Button -->
+            <button onclick="showTransactions()">Transactions</button>
+        </div>
+
+        <!-- Display Transactions (Initially Hidden) -->
+        <div id="Debit-transactions" style="display:none;">
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTkxtJD6ucivYkRW4saLFPqE6zamwOg-sxYMTvdTyXyj7D4eh4TTBjA8TV82E-Q-A4RpHzq-Digpsmt/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" height="700px" width="100%"></iframe>
+            </div>
+        </div>
+    </form>
+    </div>
+
     <script>
         function showTransactions() {
-            var transactionsDiv = document.getElementById("transactions");
-            transactionsDiv.style.display = transactionsDiv.style.display === "none" ? "block" : "none";
+            var creditTransactionsDiv = document.getElementById("Credit-transactions");
+            var debitTransactionsDiv = document.getElementById("Debit-transactions");
+    
+            if (creditTransactionsDiv.style.display === "none") {
+                creditTransactionsDiv.style.display = "block";
+            } else {
+                creditTransactionsDiv.style.display = "none";
+            }
+    
+            if (debitTransactionsDiv.style.display === "none") {
+                debitTransactionsDiv.style.display = "block";
+            } else {
+                debitTransactionsDiv.style.display = "none";
+            }
         }
+    
+        function showCreditForm() {
+            document.getElementById("Credit").style.display = "block";
+            document.getElementById("Debit").style.display = "none";
+        }
+    
+        function showDebitForm() {
+            document.getElementById("Credit").style.display = "none";
+            document.getElementById("Debit").style.display = "block";
+        }
+    
+        const creditScriptURL = 'https://script.google.com/macros/s/AKfycbzeTkdz_E5TogNjq5Wu0zcm-o62KXJN-qQ3BNAEhhAIc97nZnaO4lBnygBdYGtx5IT-/exec';
+        const creditForm = document.forms['Credit'];
+    
+        creditForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(creditForm);
+            const formattedDate = formatDate(formData.get('Date'));
+            formData.set('Date', formattedDate);
 
-        const scriptURL = 'https://script.google.com/macros/s/AKfycbzeTkdz_E5TogNjq5Wu0zcm-o62KXJN-qQ3BNAEhhAIc97nZnaO4lBnygBdYGtx5IT-/exec';
-        const form = document.forms['product'];
-      
-        form.addEventListener('submit', e => {
-          e.preventDefault();
-          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => alert("Thank you! your form is submitted successfully." ))
-            .then(() => {  window.location.reload(); })
-            .catch(error => console.error('Error!', error.message));
+            fetch(creditScriptURL, { method: 'POST', body: new FormData(creditForm) })
+                .then(response => alert("Thank you! your Credit Transaction is submitted successfully."))
+                .then(() => { window.location.reload(); })
+                .catch(error => console.error('Error!', error.message));
         });
+    
+        const debitScriptURL = 'https://script.google.com/macros/s/AKfycbyq0ZT6JhQBXH_dVFFRPqrv13HKFMrD84Ih1ndly_CuGKfEsX5qR-LVjwCZq--aYz9aEg/exec';
+        const debitForm = document.forms['Debit'];
+    
+        debitForm.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(debitForm);
+            const formattedDate = formatDate(formData.get('Date'));
+            formData.set('Date', formattedDate);
+
+            fetch(debitScriptURL, { method: 'POST', body: new FormData(debitForm) })
+                .then(response => alert("Thank you! your Debit Transaction is submitted successfully."))
+                .then(() => { window.location.reload(); })
+                .catch(error => console.error('Error!', error.message));
+        });
+
+        function formatDate(dateString) {
+            const parts = dateString.split('-');
+            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+        }
     </script>
+    
 </body>
 </html>
