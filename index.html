@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venkata Bank Transactions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background-color: #f8f8f8; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+
+        form {
+            background-color: #fff; 
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #333; 
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 6px;
+            color: #555; 
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 20px;
+            border: 1px solid #ccc; 
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: rgb(4, 162, 4);
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: calc(50% - 5px); /* 50% width with a small gap between buttons */
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: rgb(5, 134, 5);
+        }
+
+        #transactions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media only screen and (max-width: 600px) {
+            form {
+                max-width: 100%;
+            }
+            button {
+                width: 100%; /* Full width on small screens */
+            }
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px; /* Gap between buttons */
+        }
+    </style>
+</head>
+<body>
+    <form method="post" action="" name="product" id="product">
+        <h1>Enter Transactions</h1>
+        
+
+        <label for="date">Date*</label>
+        <input class="fil" type="date" name="Date" required>
+
+        <label for="money">Money*</label>
+        <input class="fil" type="number" name="Money" placeholder="Enter Money" required>
+
+        <label for="type">Type*</label>
+        <select name="Type" required>
+            <option value="">Select Type</option>
+            <option value="Credited">Credited</option>
+            <option value="Debited">Debited</option>
+        </select>
+
+        <label for="reason">Reason*</label>
+        <input class="fil" type="text" name="Reason" placeholder="Enter Reason" required>
+
+        <!-- Button Container to hold both buttons -->
+        <div class="button-container">
+            <button type="submit">Submit &#10132;</button>
+            <!-- Add Transactions Button -->
+            <button onclick="showTransactions()">Transactions</button>
+        </div>
+
+        <!-- Display Transactions (Initially Hidden) -->
+        <div id="transactions" style="display:none;">
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vROM-K3RkGgRQycQRUNk53NkulCQd_qU2ydEwT4uVpErz_1efDpNny4Zi5SiX3kHFo4n5zXo7DEAGXw/pubhtml?gid=0&amp;single=true&amp;widget=true&amp;headers=false" height="700px" width="100%"></iframe>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function showTransactions() {
+            var transactionsDiv = document.getElementById("transactions");
+            transactionsDiv.style.display = transactionsDiv.style.display === "none" ? "block" : "none";
+        }
+
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzeTkdz_E5TogNjq5Wu0zcm-o62KXJN-qQ3BNAEhhAIc97nZnaO4lBnygBdYGtx5IT-/exec';
+        const form = document.forms['product'];
+      
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => alert("Thank you! your form is submitted successfully." ))
+            .then(() => {  window.location.reload(); })
+            .catch(error => console.error('Error!', error.message));
+        });
+    </script>
+</body>
+</html>
