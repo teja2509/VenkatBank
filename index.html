@@ -86,15 +86,27 @@
         .button-container {
             display: flex;
             justify-content: space-between;
-            gap: 10px; /* Gap between buttons */
+            gap: 10px;/* Gap between buttons */
         }
+
+        #button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
     </style>
 </head>
 <body>
     <div>
         <h1>Select Transaction Type</h1>
-        <button onclick="showCreditForm()">Credited </button>
-        <button onclick="showDebitForm()">Debited </button>
+        <div id="button-container">
+            <button onclick="showCreditForm()">Credited </button>
+            <br>
+            <button onclick="showDebitForm()">Debited </button>
+        </div>
+        
     
         <br>    
         <br>    
@@ -195,7 +207,7 @@
             e.preventDefault();
             const formData = new FormData(creditForm);
             const formattedDate = formatDate(formData.get('Date'));
-            formData.set('Date', formattedDate);
+        formData.set('Date', formattedDate);
 
             fetch(creditScriptURL, { method: 'POST', body: new FormData(creditForm) })
                 .then(response => alert("Thank you! your Credit Transaction is submitted successfully."))
