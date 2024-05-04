@@ -86,27 +86,15 @@
         .button-container {
             display: flex;
             justify-content: space-between;
-            gap: 10px;/* Gap between buttons */
+            gap: 10px; /* Gap between buttons */
         }
-
-        #button-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
     </style>
 </head>
 <body>
     <div>
         <h1>Select Transaction Type</h1>
-        <div id="button-container">
-            <button onclick="showCreditForm()">Credited </button>
-            <br>
-            <button onclick="showDebitForm()">Debited </button>
-        </div>
-        
+        <button onclick="showCreditForm()">Credited </button>
+        <button onclick="showDebitForm()">Debited </button>
     
         <br>    
         <br>    
@@ -205,10 +193,6 @@
     
         creditForm.addEventListener('submit', e => {
             e.preventDefault();
-            const formData = new FormData(creditForm);
-            const formattedDate = formatDate(formData.get('Date'));
-        formData.set('Date', formattedDate);
-
             fetch(creditScriptURL, { method: 'POST', body: new FormData(creditForm) })
                 .then(response => alert("Thank you! your Credit Transaction is submitted successfully."))
                 .then(() => { window.location.reload(); })
@@ -220,21 +204,14 @@
     
         debitForm.addEventListener('submit', e => {
             e.preventDefault();
-            const formData = new FormData(debitForm);
-            const formattedDate = formatDate(formData.get('Date'));
-            formData.set('Date', formattedDate);
-
             fetch(debitScriptURL, { method: 'POST', body: new FormData(debitForm) })
                 .then(response => alert("Thank you! your Debit Transaction is submitted successfully."))
                 .then(() => { window.location.reload(); })
                 .catch(error => console.error('Error!', error.message));
         });
-
-        function formatDate(dateString) {
-            const parts = dateString.split('-');
-            return `${parts[2]}-${parts[1]}-${parts[0]}`;
-        }
     </script>
     
 </body>
 </html>
+
+
